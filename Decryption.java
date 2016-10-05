@@ -1,18 +1,11 @@
 public class Decryption {
-	public static String[][] ciph = null;
-	public static String[][] ciphcopy = null;
-	public static String[][] key = null;
+	public static String[][] ciph = keygen.cipher;
+	public static String[][] ciphcopy = ciph;
 	int i = 0, j = 0, k = 0;
 	public static String[][] plainkey_after_decipher = new String[4][4];
 	public static String str;
 
-	public void receive_cipher(String[][] ciphr) {
-		ciph = ciphr;
-		ciphcopy = ciph;
-
-	}
-
-	public void inverse_multiply() {
+	public String[][] inverse_multiply(String[][] ciph) {
 
 		System.out.println("In Decipher Step-1:");
 		for (int i = 0; i < 4; i++) {
@@ -22,11 +15,11 @@ public class Decryption {
 			}
 			System.out.println("");
 		}
+		return ciph;
 	}
 
 	private String matrix_inv(String s) {
 		// TODO Auto-generated method stub
-		System.out.println(s);
 		int[][] mul = { { 0, 0, 1, 0, 0, 1, 0, 1 }, { 1, 0, 0, 1, 0, 0, 1, 0 },
 				{ 0, 1, 0, 0, 1, 0, 0, 1 }, { 1, 0, 1, 0, 0, 1, 0, 0 },
 				{ 0, 1, 0, 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1, 0, 0, 1 },
@@ -81,7 +74,7 @@ public class Decryption {
 
 	}
 
-	public void step_rearrange() {
+	public String[][] step_rearrange(String[][] ciph) {
 		// TODO Auto-generated method stub
 		int[][] res = new int[4][4];
 		int[] e = new int[4];
@@ -125,6 +118,7 @@ public class Decryption {
 			}
 			System.out.println("");
 		}
+		return ciph;
 	}
 
 	public int[] column_remix(int a[], int b[]) {
@@ -137,7 +131,7 @@ public class Decryption {
 		return res;
 	}
 
-	public void shiftrowinv() {
+	public String[][] shiftrowinv(String[][] ciph) {
 		// TODO Auto-generated method stub
 
 		int i = 1;
@@ -158,6 +152,7 @@ public class Decryption {
 			}
 			System.out.println("");
 		}
+		return ciph;
 	}
 
 	public void shift_right(int i2) {
@@ -178,43 +173,39 @@ public class Decryption {
 
 	}
 
-	public void xorinv() {
+	public String[][] xorinv(String[][] ciph, String[][] key_array) {
 		// TODO Auto-generated method stub
+		String[][] plain = new String[4][4];
 		int[][] res_cipher = new int[4][4];
 		int[][] res_key = new int[4][4];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				System.out.println(ciph[i][j]);
 				res_cipher[i][j] = Integer.parseInt(ciph[i][j], 16);
-				System.out.println(res_cipher[i][j]);
-				res_key[i][j] = Integer.parseInt(keygen.key_array[i][j], 16);
-
+				res_key[i][j] = Integer.parseInt(key_array[i][j], 16);
 				int temp = res_cipher[i][j] ^ res_key[i][j];
-				plainkey_after_decipher[i][j] = Integer.toHexString(temp);
+				plain[i][j] = Integer.toHexString(temp);
 				// plainkey_after_decipher[i][j]=temp+"";
 
 			}
-
 		}
 		System.out.println("\n\nPlaintext After decipher:");
 		for (int i = 0; i < 4; i++) {
 			System.out.println("");
 			for (int j = 0; j < 4; j++) {
-				if (plainkey_after_decipher[i][j].length() == 1) {
-					plainkey_after_decipher[i][j] = plainkey_after_decipher[i][j]
-							+ "0";
+				if (plain[i][j].length() == 1) {
+					plain[i][j] = plain[i][j] + "0";
 				}
-				plainkey_after_decipher[i][j] = plainkey_after_decipher[i][j]
-						.toUpperCase();
+				plain[i][j] = plain[i][j].toUpperCase();
 
-				System.out.print(plainkey_after_decipher[i][j] + " ");
+				System.out.print(plain[i][j] + " ");
 
 			}
 		}
+		return plain;
 
 	}
 
-	public void boxtodecrypt() {
+	public String[][] boxtodecrypt(String[][] plainkey_after_decipher) {
 		// TODO Auto-generated method stub
 		String st_temp = "";
 
@@ -237,28 +228,20 @@ public class Decryption {
 				+ st_temp.length());
 
 		str = "";
-		for (i = 0; i < 128; i++) {
-			if (i % 8 == 7) {
 
-			}
-		}
 		for (i = 0; i < st_temp.length() / 8; i++) {
 
 			String as = st_temp.substring(8 * i, (i + 1) * 8);
 			as = as.substring(0, as.length() - 1);
 			int asi = Integer.parseInt(as, 2);
 			str += (char) (asi);
-			System.out.println("in loop");
 		}
 		/*
 		 * if(AES_system.len >= 16) { str=str.substring(0,15); } else
 		 * str=str.substring(0, AES_system.len);
-		 * System.out.println("Deciphered text is:"+ AES_system.len+" "
-		 * +str+" after str");
 		 */
-		System.out.println("Deciphered text is:" + " " + str
-				+ " after str");
-
+		System.out.println("Deciphered text is:" + str);
+		return plainkey_after_decipher;
 	}
 
 }

@@ -1,3 +1,4 @@
+
 public class keygen {
 	int[][] su = new int[9][9];
 	int[] key = new int[9];
@@ -5,15 +6,7 @@ public class keygen {
 	String[][] plaintxt = new String[4][4];
 	public static String[][] key_array = new String[4][4];
 	public static String[][] cipher = new String[4][4];
-	public static String ran1, ran2;
-
-	public String[][] receive_key() {
-		String[][] keyy = new String[4][4];
-		keyy = key_array;
-
-		return keyy;
-
-	}
+	public static String[][] key_array_random = new String[4][4];
 
 	keygen() {
 		su[0][0] = 8;
@@ -211,9 +204,7 @@ public class keygen {
 		// System.out.println("digit:"+result);
 
 		// String keys=Arrays.toString(key);
-		k = 0;
-		j = 0;
-		i = 0;
+
 		return result;
 	}
 
@@ -257,7 +248,7 @@ public class keygen {
 
 	}
 
-	public void print_key() {
+	public void print_key(String[][] key) {
 
 		for (j = 0; j < 4; j++) {
 
@@ -267,7 +258,7 @@ public class keygen {
 
 			{
 
-				System.out.print(key_array[j][k] + " ");
+				System.out.print(key[j][k] + " ");
 
 			}
 
@@ -275,9 +266,19 @@ public class keygen {
 
 	}
 
-	public void convbytes(String final_key) {
+	public String random_key() {
+		String key = "";
+		for (int i = 0; i < 128; i++) {
+			key += Math.round(Math.random() * 1);
+		}
+		return key;
+
+	}
+
+	public String[][] convbytes(String final_key) {
 		// TODO Auto-generated method stub
 		// int subi=0;
+		String[][] key_array = new String[4][4];
 		int j = 0;
 		int k = 0;
 
@@ -329,6 +330,7 @@ public class keygen {
 
 		}
 
+		return key_array;
 	}
 
 }
